@@ -10,31 +10,28 @@ import UIKit
 
 class Offer: NSObject {
     
+    var id: String?
     var jobTitle: String
-    var jobDescription: String = ""
+    var jobDescription: String?
     var startDate: NSDate
-    var location: String = ""
-    var hire: String = ""
-    var contract: String = ""
-    var jobTime: String = ""
-    var salary: Int = 0
-    var perks: String = ""
+    var location: String?
+    var hire: String?
+    var contractType: String?
+    var conditions: String?
+    var availability: String?
+    var number: String?
+    var carLicence: String?
+    var boatLicence: String?
+    var degree: String?
+    var studiesLevel: String?
+    var experience: String?
+    var experienceTime: String?
+    var softwareExpertise: String?
+    var languages: String?
     
     init(jobTitle: String) {
         self.jobTitle = jobTitle
         self.startDate = NSDate()
         super.init()
-    }
-    
-    convenience init(jobTitle: String, jobDescription: String, startDate: NSDate, location: String, hire: String, contract: String, jobTime: String, salary: Int, perks: String) {
-        self.init(jobTitle: jobTitle)
-        self.jobDescription = jobDescription
-        self.startDate = startDate
-        self.location = location
-        self.hire = hire
-        self.contract = contract
-        self.jobTime = jobTime
-        self.salary = salary
-        self.perks = perks
     }
 }

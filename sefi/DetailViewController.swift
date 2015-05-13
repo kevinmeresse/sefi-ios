@@ -10,16 +10,28 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var hireLabel: UILabel!
-    @IBOutlet weak var contractLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var salaryLabel: UILabel!
-    @IBOutlet weak var perksLabel: UILabel!
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var applyButton: UIBarButtonItem!
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var contractTypeLabel: UILabel!
+    @IBOutlet weak var carLicenceLabel: UILabel!
+    @IBOutlet weak var degreeLabel: UILabel!
+    @IBOutlet weak var experienceLabel: UILabel!
+    @IBOutlet weak var numberLabel: UILabel!
+    @IBOutlet weak var availabilityLabel: UILabel!
+    @IBOutlet weak var boatLicenceLabel: UILabel!
+    @IBOutlet weak var studiesLevelLabel: UILabel!
+    @IBOutlet weak var experienceTimeLabel: UILabel!
+    @IBOutlet weak var jobDescriptionLabel: UILabel!
+    @IBOutlet weak var conditionsLabel: UILabel!
+    @IBOutlet weak var softwareExpertiseLabel: UILabel!
+    @IBOutlet weak var languageLabel: UILabel!
+    
+    
+    var itemIndex: Int?
     var detailItem: Offer? {
         didSet {
             // Update the view.
@@ -27,44 +39,144 @@ class DetailViewController: UIViewController {
         }
     }
     
+    @IBAction func apply(sender: AnyObject) {
+        // Show loading view and disable button
+        loadingView.hidden = false
+        applyButton.enabled = false
+        
+        // Call webservice
+        if let offer: Offer = self.detailItem {
+            SOAPService
+                .POST(RequestFactory.applyOffer(offer))
+                .success({xml in {XMLParser.checkIfApplied(xml)} ~> {self.offerIsApplied($0, message: $1)}})
+                .failure(onFailure, queue: NSOperationQueue.mainQueue())
+        }
+    }
+    
+    private func offerIsApplied(success: Bool, message: String?) {
+        // Hide loading view and re-enable button
+        loadingView.hidden = true
+        applyButton.enabled = true
+        
+        if success {
+            println("SUCCESS: Offer is favorited!")
+            showInformationPopup("Félicitations", message: "Votre demande a bien été prise en compte !", whenDone: {
+                // Delete current offer from list
+                let offersNC = self.splitViewController?.viewControllers.first as! UINavigationController
+                if (offersNC.viewControllers.count > 1 && self.itemIndex != nil) {
+                    let offersVC = offersNC.viewControllers[offersNC.viewControllers.count - 2]  as! ListOffersViewController
+                    offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
+                    offersVC.tableView.reloadData()
+                }
+                // Go back to the list
+                offersNC.popViewControllerAnimated(true)
+                
+                // Show an "empty view" on the right-hand side, only on an iPad.
+                if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad
+                {
+                    let emptyVC = self.storyboard!.instantiateViewControllerWithIdentifier("EmptyOfferViewController") as! UIViewController
+                    self.splitViewController!.showDetailViewController(emptyVC, sender: self)
+                }
+            })
+        } else {
+            println("FAILURE: Offer is NOT favorited...")
+            showInformationPopup("Ooops", message: "Une erreur s'est produite. Votre demande n'a pas été prise en compte...", whenDone: nil)
+        }
+    }
+    
+    private func showInformationPopup(title: String, message: String, whenDone: (() -> ())?) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .Alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .Default,
+            handler: { _ in
+                self.dismissViewControllerAnimated(true, completion: nil)
+                whenDone!()
+        }))
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    private func onFailure(statusCode: Int, error: NSError?)
+    {
+        println("HTTP status code \(statusCode)")
+        
+        let
+        title = "Erreur",
+        msg   = error?.localizedDescription ?? "Une erreur est survenue.",
+        alert = UIAlertController(
+            title: title,
+            message: msg,
+            preferredStyle: .Alert)
+        
+        alert.addAction(UIAlertAction(
+            title: "OK",
+            style: .Default,
+            handler: { _ in
+                self.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
     func configureView() {
         // Update the user interface for the detail item.
         if let offer: Offer = self.detailItem {
-            if let title = self.titleLabel {
-                title.text = offer.jobTitle
+            if let label = self.titleLabel {
+                label.text = offer.jobTitle
             }
-            if let description = self.descriptionLabel {
-                description.text = offer.jobDescription
+            if let label = self.idLabel {
+                label.text = offer.id
             }
-            if let date = self.dateLabel {
-                date.text = dateToString(offer.startDate)
+            if let label = self.locationLabel {
+                label.text = offer.location
             }
-            if let hire = self.hireLabel {
-                hire.text = offer.hire
+            if let label = self.contractTypeLabel {
+                label.text = offer.contractType
             }
-            if let contract = self.contractLabel {
-                contractLabel.text = offer.contract
+            if let label = self.carLicenceLabel {
+                label.text = offer.carLicence
             }
-            if let jobTime = self.timeLabel {
-                jobTime.text = offer.jobTime
+            if let label = self.degreeLabel {
+                label.text = offer.degree
             }
-            if let salary = self.salaryLabel {
-                salaryLabel.text = "\(String(offer.salary)) XPF"
+            if let label = self.experienceLabel {
+                label.text = offer.experience
             }
-            if let perks = self.perksLabel {
-                perks.text = offer.perks
+            if let label = self.numberLabel {
+                label.text = offer.number
+            }
+            if let label = self.availabilityLabel {
+                label.text = offer.availability
+            }
+            if let label = self.boatLicenceLabel {
+                label.text = offer.boatLicence
+            }
+            if let label = self.studiesLevelLabel {
+                label.text = offer.studiesLevel
+            }
+            if let label = self.experienceTimeLabel {
+                label.text = offer.experienceTime
+            }
+            if let label = self.jobDescriptionLabel {
+                label.text = offer.jobDescription
+            }
+            if let label = self.conditionsLabel {
+                label.text = offer.conditions
+            }
+            if let label = self.softwareExpertiseLabel {
+                label.text = offer.softwareExpertise
+            }
+            if let label = self.languageLabel {
+                label.text = offer.languages
             }
         }
     }
     
-    func dateToString(date: NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "fr_FR")
-        dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
-        dateFormatter.timeStyle = NSDateFormatterStyle.NoStyle
-        return dateFormatter.stringFromDate(date)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -76,16 +188,4 @@ class DetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
