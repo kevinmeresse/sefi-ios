@@ -29,6 +29,9 @@ class XMLParser {
         
         let body = isNewOffers ? "ns1:WSM_Get_OffresResponse" : "ns1:WSM_Get_Offres_PostuleesResponse"
         
+        let personFirstName: String? = parsedXml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["\(body)"]["out_ws_DEM_Structure"]["prenom"].element?.text
+        let personLastName: String? = parsedXml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["\(body)"]["out_ws_DEM_Structure"]["nom"].element?.text
+        
         let offersArray = parsedXml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["\(body)"]["out_ws_DEM_Structure"]["OFFRE"]
         for offer in offersArray {
             let jobTitle = offer["OFF_ROM_Fonction"].element?.text
@@ -48,6 +51,18 @@ class XMLParser {
             newOffer.conditions = offer["OFF_Conditions"].element?.text
             newOffer.softwareExpertise = offer["OFF_Informatique"].element?.text
             newOffer.languages = offer["OFF_Langues"].element?.text
+            newOffer.applied = !isNewOffers
+            newOffer.firstName = personFirstName
+            newOffer.lastName = personLastName
+            
+            if newOffer.applied {
+                newOffer.offerDate = offer["OFF_Date_Offre"].element?.text
+                newOffer.applyDate = offer["OFF_Date_Relation"].element?.text
+                newOffer.fullJobTitle = offer["OFF_Emploi"].element?.text
+                newOffer.companyName = offer["OFF_ENT_Nom"].element?.text
+                newOffer.companyContact = offer["OFF_ENT_Contact"].element?.text
+            }
+            
             offers.append(newOffer)
         }
         

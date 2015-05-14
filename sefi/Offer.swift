@@ -28,10 +28,19 @@ class Offer: NSObject {
     var experienceTime: String?
     var softwareExpertise: String?
     var languages: String?
+    var applyDate: String?
+    var offerDate: String?
+    var fullJobTitle: String?
+    var companyName: String?
+    var companyContact: String?
+    var applied: Bool
+    var firstName: String?
+    var lastName: String?
     
     init(jobTitle: String) {
         self.jobTitle = jobTitle
         self.startDate = NSDate()
+        self.applied = false
         super.init()
     }
 }

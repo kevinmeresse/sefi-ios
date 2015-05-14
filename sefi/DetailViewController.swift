@@ -11,6 +11,7 @@ import UIKit
 class DetailViewController: UIViewController {
     
     @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var companyView: UIView!
     @IBOutlet weak var applyButton: UIBarButtonItem!
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -29,6 +30,12 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var conditionsLabel: UILabel!
     @IBOutlet weak var softwareExpertiseLabel: UILabel!
     @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var applyDateLabel: UILabel!
+    @IBOutlet weak var offerIdLabel: UILabel!
+    @IBOutlet weak var offerDateLabel: UILabel!
+    @IBOutlet weak var companyLabel: UILabel!
+    @IBOutlet weak var contactLabel: UILabel!
     
     
     var itemIndex: Int?
@@ -173,6 +180,30 @@ class DetailViewController: UIViewController {
             }
             if let label = self.languageLabel {
                 label.text = offer.languages
+            }
+            if let view = self.companyView {
+                view.hidden = !offer.applied
+                if view.hidden {
+                    view.removeFromSuperview()
+                }
+            }
+            if let label = self.nameLabel {
+                label.text = "\(offer.lastName!) \(offer.firstName!)"
+            }
+            if let label = self.applyDateLabel {
+                label.text = offer.applyDate
+            }
+            if let label = self.offerIdLabel {
+                label.text = offer.id
+            }
+            if let label = self.offerDateLabel {
+                label.text = offer.offerDate
+            }
+            if let label = self.companyLabel {
+                label.text = offer.companyName
+            }
+            if let label = self.contactLabel {
+                label.text = offer.companyContact
             }
         }
     }
