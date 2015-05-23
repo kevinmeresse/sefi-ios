@@ -14,7 +14,7 @@ class RequestFactory {
     // Production
     //static let host: String = "ws.sefi.pf"
     // Dev
-    static let host: String = "localhost"
+    static let host: String = "192.168.1.61"
     
     /** Creates a request to login to the SEFI server. */
     class func login(#id: String, birthdate: String) -> NSMutableURLRequest
