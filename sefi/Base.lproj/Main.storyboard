@@ -832,6 +832,7 @@
                                             <constraint firstItem="Wfz-ss-EQo" firstAttribute="top" secondItem="yf3-pH-vZq" secondAttribute="bottom" constant="8" id="UEv-Uz-FGi"/>
                                             <constraint firstAttribute="trailing" secondItem="RUs-6f-ieR" secondAttribute="trailing" constant="8" id="UOh-ER-OAp"/>
                                             <constraint firstItem="DV4-CB-Cr8" firstAttribute="leading" secondItem="6OA-AB-1g0" secondAttribute="leading" constant="8" id="VaZ-yF-yQN"/>
+                                            <constraint firstItem="K7d-2l-iC8" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6OA-AB-1g0" secondAttribute="top" constant="8" id="VzJ-Xg-wFK"/>
                                             <constraint firstItem="6PC-eF-7gD" firstAttribute="top" secondItem="hTq-gf-Ryb" secondAttribute="bottom" constant="34" id="Yzk-vf-tPn"/>
                                             <constraint firstAttribute="trailing" secondItem="x9W-jb-SaP" secondAttribute="trailing" constant="8" id="ZYa-b5-v4B"/>
                                             <constraint firstItem="PXo-lJ-ym0" firstAttribute="leading" secondItem="0HH-n8-MLv" secondAttribute="trailing" constant="8" id="Zae-uT-ttT"/>
@@ -892,19 +893,40 @@
                                     <constraint firstItem="6OA-AB-1g0" firstAttribute="top" secondItem="Dy7-wJ-pAd" secondAttribute="top" id="svh-FZ-NMA"/>
                                 </constraints>
                             </scrollView>
+                            <view hidden="YES" alpha="0.49999999999999961" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XG9-VT-bvI" userLabel="Loading View">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="0t2-Ji-9Mw">
+                                        <rect key="frame" x="282" y="250" width="37" height="37"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="0t2-Ji-9Mw" secondAttribute="centerY" id="KWV-Yq-trz"/>
+                                    <constraint firstAttribute="centerX" secondItem="0t2-Ji-9Mw" secondAttribute="centerX" id="ScE-Jq-dBB"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Dy7-wJ-pAd" firstAttribute="top" secondItem="E1a-0n-eat" secondAttribute="top" id="4Sz-do-7Oe"/>
                             <constraint firstAttribute="trailing" secondItem="Dy7-wJ-pAd" secondAttribute="trailing" id="51C-AW-gN7"/>
+                            <constraint firstAttribute="trailing" secondItem="XG9-VT-bvI" secondAttribute="trailing" id="8zo-kX-B43"/>
                             <constraint firstAttribute="bottom" secondItem="Dy7-wJ-pAd" secondAttribute="bottom" id="KSP-bI-eeS"/>
+                            <constraint firstItem="PHP-Yg-pOY" firstAttribute="top" secondItem="XG9-VT-bvI" secondAttribute="bottom" id="Lge-nc-IO8"/>
                             <constraint firstItem="Dy7-wJ-pAd" firstAttribute="leading" secondItem="E1a-0n-eat" secondAttribute="leading" id="Pkl-gg-qv0"/>
+                            <constraint firstItem="XG9-VT-bvI" firstAttribute="top" secondItem="yZ8-Pb-ku9" secondAttribute="bottom" id="SWo-X4-ahI"/>
                             <constraint firstAttribute="width" secondItem="6OA-AB-1g0" secondAttribute="width" id="TCp-ZB-lyB"/>
+                            <constraint firstItem="XG9-VT-bvI" firstAttribute="leading" secondItem="E1a-0n-eat" secondAttribute="leading" id="ugk-07-46L"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Détail de l'offre" id="S7Y-aU-Kd6">
-                        <barButtonItem key="rightBarButtonItem" title="Postuler" id="3GT-VT-XPt"/>
+                        <barButtonItem key="rightBarButtonItem" title="Postuler" id="3GT-VT-XPt">
+                            <connections>
+                                <action selector="apply:" destination="muS-IW-nUp" id="R8F-h3-dpc"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="applyButton" destination="3GT-VT-XPt" id="MtH-Ld-sfZ"/>
@@ -924,6 +946,7 @@
                         <outlet property="idLabel" destination="hTq-gf-Ryb" id="6f2-lP-QCF"/>
                         <outlet property="jobDescriptionLabel" destination="PXo-lJ-ym0" id="jpG-3f-x4g"/>
                         <outlet property="languageLabel" destination="8NE-Ev-jXI" id="93R-sN-OJD"/>
+                        <outlet property="loadingView" destination="XG9-VT-bvI" id="sba-Ac-4u5"/>
                         <outlet property="locationLabel" destination="Qw3-mY-mTS" id="5KS-i8-MgO"/>
                         <outlet property="nameLabel" destination="eKl-Er-tCy" id="U5m-fT-V4Q"/>
                         <outlet property="numberLabel" destination="9vt-qj-iR7" id="2Zo-gi-OWf"/>

@@ -12,7 +12,7 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
-    //@IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var companyView: UIView!
     @IBOutlet weak var applyButton: UIBarButtonItem!
     
@@ -50,7 +50,7 @@ class DetailViewController: UIViewController {
     
     @IBAction func apply(sender: AnyObject) {
         // Show loading view and disable button
-        //loadingView.hidden = false
+        loadingView.hidden = false
         applyButton.enabled = false
         
         // Call webservice
@@ -64,7 +64,7 @@ class DetailViewController: UIViewController {
     
     private func offerIsApplied(success: Bool, message: String?) {
         // Hide loading view and re-enable button
-        //loadingView.hidden = true
+        loadingView.hidden = true
         applyButton.enabled = true
         
         if success {
@@ -184,8 +184,11 @@ class DetailViewController: UIViewController {
                 label.text = offer.languages
             }
             if let view = self.companyView {
-                view.hidden = !offer.applied
-                if view.hidden {
+                if offer.applied {
+                    // Hide Apply button
+                    navigationItem.rightBarButtonItems = []
+                } else {
+                    // Hide Company details
                     view.removeFromSuperview()
                 }
             }
