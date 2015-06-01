@@ -34,7 +34,9 @@ class ListAppliedOffersViewController: UIViewController, UITableViewDelegate {
         if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad
         {
             let emptyVC = storyboard!.instantiateViewControllerWithIdentifier("EmptyOfferViewController") as! UIViewController
-            splitViewController!.showDetailViewController(emptyVC, sender: self)
+            if splitViewController != nil {
+                splitViewController!.showDetailViewController(emptyVC, sender: self)
+            }
         }
     }
 
@@ -50,7 +52,11 @@ class ListAppliedOffersViewController: UIViewController, UITableViewDelegate {
         let offerDetailsNC = storyboard!.instantiateViewControllerWithIdentifier("OfferDetailsNavigationController") as! UINavigationController
         let offerDetailsVC = offerDetailsNC.topViewController as! DetailViewController
         offerDetailsVC.detailItem = dataSource.offers[indexPath.row]
-        showDetailViewController(offerDetailsNC, sender: self)
+        if splitViewController != nil {
+            splitViewController!.showDetailViewController(offerDetailsNC, sender: self)
+        } else {
+            navigationController!.pushViewController(offerDetailsVC, animated: true)
+        }
     }
     
     

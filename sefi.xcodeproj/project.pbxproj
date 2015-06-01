@@ -13,6 +13,7 @@
 		0A2F90481AE9D9C400354882 /* SWXMLHash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F90471AE9D9C400354882 /* SWXMLHash.swift */; };
 		0A2F904A1AEB1CCD00354882 /* StringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F90491AEB1CCD00354882 /* StringFormatter.swift */; };
 		0A2F904C1AF1CEE600354882 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F904B1AF1CEE600354882 /* User.swift */; };
+		0A4FB5371B1CFD4400680368 /* TryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A4FB5361B1CFD4400680368 /* TryCatch.m */; };
 		0A595BAC1AE5C59500BEA970 /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A595BAB1AE5C59500BEA970 /* DateFormatter.swift */; };
 		0A595BB21AE5CA8C00BEA970 /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A595BB11AE5CA8C00BEA970 /* GCD.swift */; };
 		0A595BB51AE5CB9300BEA970 /* RequestFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A595BB41AE5CB9300BEA970 /* RequestFactory.swift */; };
@@ -47,6 +48,9 @@
 		0A2F90471AE9D9C400354882 /* SWXMLHash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWXMLHash.swift; sourceTree = "<group>"; };
 		0A2F90491AEB1CCD00354882 /* StringFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringFormatter.swift; sourceTree = "<group>"; };
 		0A2F904B1AF1CEE600354882 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0A4FB5341B1CFD4300680368 /* sefi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "sefi-Bridging-Header.h"; sourceTree = "<group>"; };
+		0A4FB5351B1CFD4400680368 /* TryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TryCatch.h; sourceTree = "<group>"; };
+		0A4FB5361B1CFD4400680368 /* TryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TryCatch.m; sourceTree = "<group>"; };
 		0A595BAB1AE5C59500BEA970 /* DateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
 		0A595BB11AE5CA8C00BEA970 /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
 		0A595BB41AE5CB9300BEA970 /* RequestFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestFactory.swift; sourceTree = "<group>"; };
@@ -133,6 +137,9 @@
 			children = (
 				0A595BB11AE5CA8C00BEA970 /* GCD.swift */,
 				0A595BB61AE5CE2300BEA970 /* Operators.swift */,
+				0A4FB5351B1CFD4400680368 /* TryCatch.h */,
+				0A4FB5361B1CFD4400680368 /* TryCatch.m */,
+				0A4FB5341B1CFD4300680368 /* sefi-Bridging-Header.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -254,6 +261,7 @@
 				TargetAttributes = {
 					0AD35E721AD4C47900D77D76 = {
 						CreatedOnToolsVersion = 6.3;
+						DevelopmentTeam = E3XETUM6B2;
 					};
 					0AD35E871AD4C47900D77D76 = {
 						CreatedOnToolsVersion = 6.3;
@@ -316,6 +324,7 @@
 				0A2F90461AE9C13D00354882 /* XMLParser.swift in Sources */,
 				0A595BAC1AE5C59500BEA970 /* DateFormatter.swift in Sources */,
 				0A595BB51AE5CB9300BEA970 /* RequestFactory.swift in Sources */,
+				0A4FB5371B1CFD4400680368 /* TryCatch.m in Sources */,
 				0A2F904A1AEB1CCD00354882 /* StringFormatter.swift in Sources */,
 				0AA23D401AE08D3100696EDA /* DetailViewController.swift in Sources */,
 				0AD35E791AD4C47900D77D76 /* AppDelegate.swift in Sources */,
@@ -451,9 +460,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = sefi/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "sefi/sefi-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -462,9 +478,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = sefi/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "sefi/sefi-Bridging-Header.h";
 			};
 			name = Release;
 		};

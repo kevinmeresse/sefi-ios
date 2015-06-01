@@ -21,12 +21,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         let defaults = NSUserDefaults.standardUserDefaults()
         if defaults.stringForKey(User.usernameKey) != nil && defaults.stringForKey(User.birthdateKey) != nil {
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let splitViewController = storyboard.instantiateViewControllerWithIdentifier("mainSplitController") as! UISplitViewController
-            let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-            //navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-            splitViewController.delegate = self
-            self.window?.rootViewController = splitViewController
-            self.window?.makeKeyAndVisible()
+            TryCatch.try({ () -> Void in
+                let splitViewController = storyboard.instantiateViewControllerWithIdentifier("mainSplitController") as! UISplitViewController
+                splitViewController.delegate = self
+                self.window?.rootViewController = splitViewController
+                self.window?.makeKeyAndVisible()
+            }, catch: { (exception) -> Void in
+                let navController = storyboard.instantiateViewControllerWithIdentifier("NewOffersNavigationController") as! UINavigationController
+                self.window?.rootViewController = navController
+                self.window?.makeKeyAndVisible()
+            }) { () -> Void in
+                //close resources
+            }
         }
         
         return true

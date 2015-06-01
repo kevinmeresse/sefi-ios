@@ -125,10 +125,11 @@ class LoginViewController: UIViewController, UISplitViewControllerDelegate, UITe
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showAppContent" || segue.identifier == "forwardToAppContent" {
             // Get the split view controller and configure it
-            let splitViewController = segue.destinationViewController as! UISplitViewController
-            let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-            //navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
-            splitViewController.delegate = self
+            if let splitViewController = segue.destinationViewController as? UISplitViewController {
+                let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
+                //navigationController.topViewController.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+                splitViewController.delegate = self
+            }
         }
     }
     

@@ -50,7 +50,11 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
         let offerDetailsVC = offerDetailsNC.topViewController as! DetailViewController
         offerDetailsVC.detailItem = dataSource.offers[indexPath.row]
         offerDetailsVC.itemIndex = indexPath.row
-        showDetailViewController(offerDetailsNC, sender: self)
+        if splitViewController != nil {
+            splitViewController!.showDetailViewController(offerDetailsNC, sender: self)
+        } else {
+            navigationController!.pushViewController(offerDetailsVC, animated: true)
+        }
     }
     
     
@@ -105,8 +109,13 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
         //let appliedOffersNC = storyboard!.instantiateViewControllerWithIdentifier("AppliedOffersNavigationController") as! UINavigationController
         //splitViewController!.showViewController(appliedOffersNC, sender: self)
         let appliedOffersVC = storyboard!.instantiateViewControllerWithIdentifier("AppliedOffersViewController") as! UIViewController
-        let navigationController = splitViewController!.viewControllers[0] as! UINavigationController
-        navigationController.pushViewController(appliedOffersVC, animated: true)
+        if splitViewController != nil {
+            let navController = splitViewController!.viewControllers[0] as! UINavigationController
+            navController.pushViewController(appliedOffersVC, animated: true)
+        } else {
+            navigationController!.pushViewController(appliedOffersVC, animated: true)
+        }
+        
     }
     
     // MARK: - Navigation
