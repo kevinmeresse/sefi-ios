@@ -100,12 +100,19 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
     // MARK: - Actions
     
     @IBAction func unwindToMainList(sender: UIStoryboardSegue) {
-        if let indexPath = tableView.indexPathForSelectedRow() {
-            displayOfferFromIndexPath(indexPath)
-        } else if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-            // Show an "empty view" on the right-hand side, only on an iPad.
-            let emptyVC = storyboard!.instantiateViewControllerWithIdentifier("EmptyOfferViewController") as! UIViewController
-            splitViewController!.showDetailViewController(emptyVC, sender: self)
+        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+            if let indexPath = tableView.indexPathForSelectedRow() {
+                displayOfferFromIndexPath(indexPath)
+            } else {
+                // Show an "empty view" on the right-hand side, only on an iPad.
+                let emptyVC = storyboard!.instantiateViewControllerWithIdentifier("EmptyOfferViewController") as! UIViewController
+                splitViewController!.showDetailViewController(emptyVC, sender: self)
+            }
+        } else {
+            // Deselect item in list
+            if let indexPath = tableView.indexPathForSelectedRow() {
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            }
         }
     }
     

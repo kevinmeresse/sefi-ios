@@ -75,7 +75,10 @@ class DetailViewController: UIViewController {
                     if (offersNC.viewControllers.count > 1 && self.itemIndex != nil) {
                         if let offersVC = offersNC.viewControllers[offersNC.viewControllers.count - 2]  as? ListOffersViewController {
                             offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
-                            offersVC.tableView.reloadData()
+                            //offersVC.tableView.reloadData()
+                            /*if let indexPath = offersVC.tableView.indexPathForSelectedRow() {
+                                offersVC.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                            }*/
                         }
                     }
                     // Go back to the list
@@ -105,8 +108,10 @@ class DetailViewController: UIViewController {
             title: "OK",
             style: .Default,
             handler: { _ in
-                self.dismissViewControllerAnimated(true, completion: nil)
-                whenDone!()
+                //self.dismissViewControllerAnimated(true, completion: nil)
+                if whenDone != nil {
+                    whenDone!()
+                }
         }))
         
         presentViewController(alert, animated: true, completion: nil)
