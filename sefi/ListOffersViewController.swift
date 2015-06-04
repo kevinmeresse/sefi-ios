@@ -19,12 +19,16 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        println("ListOffersViewController:viewDidLoad")
 
         dataSource = OfferDataSource(tableView: tableView)
         tableView.dataSource = dataSource
         tableView.delegate = self
         
+        println("ListOffersViewController:viewDidLoad: Retrieving new offers...")
         retrieveNewOffers()
+        println("ListOffersViewController:viewDidLoad: Finished retrieving new offers...")
         
         // Allow the primary and detail views to show simultaneously.
         splitViewController?.preferredDisplayMode = .AllVisible
@@ -46,15 +50,7 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
     // MARK: - Table view data source
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let offerDetailsNC = storyboard!.instantiateViewControllerWithIdentifier("OfferDetailsNavigationController") as! UINavigationController
-        let offerDetailsVC = offerDetailsNC.topViewController as! DetailViewController
-        offerDetailsVC.detailItem = dataSource.offers[indexPath.row]
-        offerDetailsVC.itemIndex = indexPath.row
-        if splitViewController != nil {
-            splitViewController!.showDetailViewController(offerDetailsNC, sender: self)
-        } else {
-            navigationController!.pushViewController(offerDetailsVC, animated: true)
-        }
+        displayOfferFromIndexPath(indexPath)
     }
     
     
@@ -68,6 +64,7 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
     }
     
     private func updateOffers(offers: [Offer]) {
+        println("ListOffersViewController:updateOffers: Updating list with new offers...")
         self.dataSource.offers = offers
         self.loadingView.hidden = true
         if offers.count > 0 {
@@ -103,6 +100,13 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
     // MARK: - Actions
     
     @IBAction func unwindToMainList(sender: UIStoryboardSegue) {
+        if let indexPath = tableView.indexPathForSelectedRow() {
+            displayOfferFromIndexPath(indexPath)
+        } else if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+            // Show an "empty view" on the right-hand side, only on an iPad.
+            let emptyVC = storyboard!.instantiateViewControllerWithIdentifier("EmptyOfferViewController") as! UIViewController
+            splitViewController!.showDetailViewController(emptyVC, sender: self)
+        }
     }
     
     @IBAction func goToAppliedOffers(sender: AnyObject) {
@@ -112,10 +116,21 @@ class ListOffersViewController: UIViewController, UITableViewDelegate {
         if splitViewController != nil {
             let navController = splitViewController!.viewControllers[0] as! UINavigationController
             navController.pushViewController(appliedOffersVC, animated: true)
-        } else {
+        } else if navigationController != nil {
             navigationController!.pushViewController(appliedOffersVC, animated: true)
         }
-        
+    }
+    
+    private func displayOfferFromIndexPath(indexPath: NSIndexPath) {
+        let offerDetailsNC = storyboard!.instantiateViewControllerWithIdentifier("OfferDetailsNavigationController") as! UINavigationController
+        let offerDetailsVC = offerDetailsNC.topViewController as! DetailViewController
+        offerDetailsVC.detailItem = dataSource.offers[indexPath.row]
+        offerDetailsVC.itemIndex = indexPath.row
+        if splitViewController != nil {
+            splitViewController!.showDetailViewController(offerDetailsNC, sender: self)
+        } else if navigationController != nil {
+            navigationController!.pushViewController(offerDetailsVC, animated: true)
+        }
     }
     
     // MARK: - Navigation

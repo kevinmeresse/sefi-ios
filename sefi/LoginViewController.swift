@@ -36,6 +36,7 @@ class LoginViewController: UIViewController, UISplitViewControllerDelegate, UITe
     }
     
     @IBAction func authenticate(sender: AnyObject) {
+        println("LoginViewController:authenticate: Authenticating...")
         // Disable fields and show loading spinner
         idTextField.enabled = false
         birthdateTextField.enabled = false
@@ -51,8 +52,9 @@ class LoginViewController: UIViewController, UISplitViewControllerDelegate, UITe
             .failure(onFailure, queue: NSOperationQueue.mainQueue())
     }
     
-    private func showContent(authenticated: Bool, message: String) {
+    private func showContent(authenticated: Bool, message: String?) {
         if authenticated {
+            println("LoginViewController:showContent: Successfully authenticated!")
             // Store credentials
             let defaults = NSUserDefaults.standardUserDefaults()
             defaults.setObject(idTextField.text, forKey: User.usernameKey)
@@ -61,6 +63,7 @@ class LoginViewController: UIViewController, UISplitViewControllerDelegate, UITe
             // Forward to app content
             self.performSegueWithIdentifier("showAppContent", sender: nil)
         } else {
+            println("LoginViewController:showContent: Failed authenticating!")
             // Re-enable fields and hide loading spinner
             resetForm(false)
             messageTextField.hidden = false

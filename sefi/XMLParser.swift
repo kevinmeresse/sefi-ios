@@ -10,15 +10,19 @@ import Foundation
 
 class XMLParser {
     
-    class func checkIfAuthenticated(xml: AnyObject) -> (authenticated: Bool, message: String) {
+    class func checkIfAuthenticated(xml: AnyObject) -> (authenticated: Bool, message: String?) {
+        println("XMLParser:checkIfAuthenticated: Checking response...")
         println(NSString(data: xml as! NSData, encoding: NSUTF8StringEncoding))
         
         let parsedXml = SWXMLHash.parse(xml as! NSData)
         let loginStatus = parsedXml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:WSM_LoginResponse"]["out_ws_Status"].element?.text
-        let loginMessage = parsedXml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:WSM_LoginResponse"]["out_ws_Message"].element?.text
+        var loginMessage = parsedXml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:WSM_LoginResponse"]["out_ws_Message"].element?.text
         
         let isAuthenticated: Bool = loginStatus?.toInt()! == 0 ? true : false
-        return (isAuthenticated, loginMessage!)
+        if loginMessage == nil {
+            loginMessage = "Erreur serveur"
+        }
+        return (isAuthenticated, loginMessage)
     }
     
     class func createOffers(xml: AnyObject, isNewOffers: Bool) -> [Offer] {
