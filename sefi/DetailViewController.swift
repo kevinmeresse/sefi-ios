@@ -71,12 +71,20 @@ class DetailViewController: UIViewController {
             println("SUCCESS: Offer is favorited!")
             showInformationPopup("Félicitations", message: "Votre demande a bien été prise en compte !", whenDone: {
                 // Delete current offer from list
-                if let offersNC = self.splitViewController?.viewControllers.first as? UINavigationController {
-                    if let offersVC = offersNC.visibleViewController as? ListOffersViewController {
-                        offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
+                if self.splitViewController != nil && self.itemIndex != nil {
+                    if let offersNC = self.splitViewController?.viewControllers.first as? UINavigationController {
+                        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+                            if let offersVC = offersNC.visibleViewController as? ListOffersViewController {
+                                offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
+                            }
+                        } else if offersNC.viewControllers.count > 1 {
+                            if let offersVC = offersNC.viewControllers[offersNC.viewControllers.count - 2]  as? ListOffersViewController {
+                                offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
+                            }
+                        }
+                        // Go back to the list
+                        offersNC.popViewControllerAnimated(true)
                     }
-                    // Go back to the list
-                    offersNC.popViewControllerAnimated(true)
                 }
                 
                 // Show an "empty view" on the right-hand side, only on an iPad.
