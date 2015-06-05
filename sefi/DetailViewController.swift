@@ -72,14 +72,8 @@ class DetailViewController: UIViewController {
             showInformationPopup("Félicitations", message: "Votre demande a bien été prise en compte !", whenDone: {
                 // Delete current offer from list
                 if let offersNC = self.splitViewController?.viewControllers.first as? UINavigationController {
-                    if (offersNC.viewControllers.count > 1 && self.itemIndex != nil) {
-                        if let offersVC = offersNC.viewControllers[offersNC.viewControllers.count - 2]  as? ListOffersViewController {
-                            offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
-                            //offersVC.tableView.reloadData()
-                            /*if let indexPath = offersVC.tableView.indexPathForSelectedRow() {
-                                offersVC.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-                            }*/
-                        }
+                    if let offersVC = offersNC.visibleViewController as? ListOffersViewController {
+                        offersVC.dataSource.offers.removeAtIndex(self.itemIndex!)
                     }
                     // Go back to the list
                     offersNC.popViewControllerAnimated(true)
